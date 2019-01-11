@@ -1,0 +1,16 @@
+package net.bodrykh.raspberrypi;
+
+public class Chat {
+    public static void main(String args[]) {
+        String str = "Earl Eugene Scruggs was a musician noted for popularizing a three-finger banjo picking style, now called \"Scruggs style,\" which is a defining characteristic of bluegrass music. His three-finger style of playing was radically different from the usual ways in which the five-string banjo had traditionally been played. ";
+        String newStr = str.replace(" ", "_");
+        System.out.println (newStr);
+        Process p;
+        try {
+        	p = Runtime.getRuntime().exec("espeak -s120 " + newStr + " 2>/dev/null");              
+            p.waitFor();
+            System.out.println ("exit: " + p.exitValue());
+            p.destroy();
+        } catch (Exception e) {}
+    }
+}

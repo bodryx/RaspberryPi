@@ -1,0 +1,129 @@
+package net.bodrykh.raspberrypi;
+
+/*import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Chat implements ActionListener{
+	JButton button;
+	JFrame frame;
+	
+	
+	public static void main(String args[]) {
+	Chat chatGui = new Chat();
+	chatGui.go();
+	}
+	
+	
+	public void go() {
+		frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		button = new JButton("Click me");
+		button.addActionListener(this);
+		
+		
+
+		frame.getContentPane().add(BorderLayout.SOUTH,button);
+		frame.setSize(300, 300);
+
+		frame.setVisible(true);
+
+		
+		//------
+		String str = "How are you?";
+		str = str.replace(" ", "_");
+		System.out.println(str);
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec("espeak -s120 " + str + " 2>/dev/null");
+			p.waitFor();
+			System.out.println("exit: " + p.exitValue());
+			p.destroy();
+		} catch (Exception e) {
+		}
+
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		button.setText("I've been clicked!");
+		
+	}
+}*/
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+
+public class Chat extends JFrame {
+
+
+    private static final long serialVersionUID = 2451829341034438685L;
+
+    public static JButton inputButton = new JButton("Send");
+    public static JTextArea editTextArea = new JTextArea("Type Here!");
+    public static JTextArea uneditTextArea = new JTextArea();
+
+    // MA - Your String, defined here and usable throughout the class
+
+    private String myString;
+
+    public Chat(String title) {
+
+        // MA - Indent your code properly so that it's more readable to both you
+        // and others
+
+        //SET LAYOUT MANAGER (How it arranges components)
+        setLayout(new BorderLayout());
+        //////CREATE SWING COMPONENTS////////////
+        //OUTPUT TEXT AREA
+        uneditTextArea.setEditable(false);
+
+        //INPUT TEXT AREA
+        editTextArea.setBackground(Color.BLUE);
+        editTextArea.setForeground(Color.WHITE);
+
+        //SET CONTENT PANE
+        Container c = getContentPane();
+
+        //ADD COMPONENTS TO CONTENT PANE        
+        c.add(uneditTextArea, BorderLayout.CENTER);
+        c.add(editTextArea, BorderLayout.SOUTH);
+        c.add(inputButton, BorderLayout.WEST);
+
+        Chat.inputButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // MA - Using the class field myString to receive text from text area
+
+                myString = editTextArea.getText();
+
+                // MA - Don't use a space when you actually want an empty string.
+                // As it stands, your code will test for a single space character.
+                // You really want it to test whether the text area is empty.
+
+                //editTextArea.setText(" ");
+
+                // MA - Do this instead.  An empty string means the text area has
+                // no input at all.
+
+                editTextArea.setText("");
+
+                System.out.println(myString);                
+            }
+        });
+    }
+}
