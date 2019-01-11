@@ -1,9 +1,16 @@
 package net.bodrykh.raspberrypi;
 
 public class Chat {
-
-	public static void main(String[] args) {
-		System.out.println("stage#1");
-	}
-
+    public static void main(String args[]) {
+        String str = "Permission is hereby granted, free of charge, to any person obtaining a copy";
+        String newStr = str.replace(" ", "_");
+        System.out.println (newStr);
+        Process p;
+        try {
+        	p = Runtime.getRuntime().exec("espeak -s120 " + newStr + " 2>/dev/null");              
+            p.waitFor();
+            System.out.println ("exit: " + p.exitValue());
+            p.destroy();
+        } catch (Exception e) {}
+    }
 }
