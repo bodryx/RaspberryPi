@@ -1,0 +1,10 @@
+package net.bodrykh.raspberrypi;
+
+public class Jarvis {
+	String inMindNow;
+
+	public String getFeedBackSpeechFromJarvis() {
+
+		return null;
+	}
+}

@@ -1,0 +1,14 @@
+package net.bodrykh.raspberrypi;
+
+public class Jarvis {
+	String inMindNow;
+
+	public Jarvis() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getFeedbackFrom() {
+
+		return null;
+	}
+}

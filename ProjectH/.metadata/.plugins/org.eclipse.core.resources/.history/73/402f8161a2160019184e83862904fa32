@@ -1,0 +1,32 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class Jarvis {
+	String inMindNow;
+
+	public Jarvis() {
+
+		// mind();
+	}
+
+	private boolean randomThought() {
+		Random rand = new Random();
+
+		int n = rand.nextInt(100) + 1;
+		if (n < 50)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+		System.out.println("inside mind()");
+
+		return null;
+	}
+
+	public String getFeedbackFrom(String str) {
+		String inStr = str;
+		return inStr + " " + "you too";
+	}
+}

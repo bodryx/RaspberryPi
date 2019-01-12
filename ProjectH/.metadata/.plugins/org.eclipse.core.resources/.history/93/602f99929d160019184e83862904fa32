@@ -1,0 +1,6 @@
+package net.bodrykh.raspberrypi;
+
+public class Jarvis {
+	String inMind;
+	
+}

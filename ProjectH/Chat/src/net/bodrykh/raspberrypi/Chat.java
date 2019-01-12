@@ -11,6 +11,8 @@ public class Chat implements ActionListener {
 	JTextField userInput;
 	JTextArea chatLog;
 	JScrollPane scroller;
+	
+	Jarvis jarvis = new Jarvis();
 
 	public static void main(String args[]) {
 		Chat chatGui = new Chat();
@@ -21,11 +23,7 @@ public class Chat implements ActionListener {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-//		button = new JButton("Click me");
-//		button.addActionListener(this);
-
 		userInput = new JTextField(20);
-		//userInput.setText("hello there");
 		userInput.addActionListener(this);
 
 		chatLog = new JTextArea(10, 20);
@@ -62,7 +60,9 @@ public class Chat implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String str = userInput.getText();
 		userInput.setText("");
-		chatLog.append(str + "\n");
-		speak(str);
+		String getStr = jarvis.getFeedbackFrom(str);
+		chatLog.append("User: " + str + "\n");
+		chatLog.append("Jarvis: " + getStr + "\n");
+		speak(getStr);
 	}
 }
