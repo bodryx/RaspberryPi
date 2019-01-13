@@ -1,0 +1,64 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class Jarvis implements Runnable{
+	String inMindNow;
+	private Thread t;
+	public Jarvis() {
+		inMindNow = "and a random decision is";
+		go();
+	}
+
+	private boolean randomDecision() {
+		Random rand = new Random();
+
+		int n = rand.nextInt(100) + 1;
+		if (n < 50)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+	
+		String inStr = str;
+		return inStr + ". received " + inMindNow + " " + randomDecision();
+	}
+
+	public void go() {
+		// for (int x = 1; x <= 100; x++) 
+	      //      System.out.println("Value of x:" + x + ", " + randomDecision()); 
+		 
+	}
+	
+	public String getFeedbackFrom(String str) {
+		return mind(str);
+	}
+
+	public void speak(String str) {
+		str = str.replace(" ", "_");
+		System.out.println(str);
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec("espeak -s120 " + str + " 2>/dev/null");
+			p.waitFor();
+			System.out.println("exit: " + p.exitValue());
+			p.destroy();
+		} catch (Exception e) {
+		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		String str = "sdfgsgs";
+		speak(str);
+	}
+	
+	 public void start () {
+	      if (t == null) {
+	         t = new Thread (this, threadName);
+	         t.start ();
+	      }
+	   }
+}

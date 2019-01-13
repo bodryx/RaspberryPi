@@ -2,10 +2,15 @@ package net.bodrykh.raspberrypi;
 
 import java.util.Random;
 
-public class Jarvis {
-	String inMindNow;
+public class Jarvis implements Runnable {
+	private String inMindNow;
 
-	public Jarvis() {
+	private String strToSpeak;
+	private int voiceType;
+
+	public Jarvis(String strToSpeak, int voiceType) {
+		this.strToSpeak = strToSpeak;
+		this.voiceType = voiceType;
 		inMindNow = "and a random decision is";
 		go();
 	}
@@ -20,18 +25,52 @@ public class Jarvis {
 	}
 
 	private String mind(String str) {
-	
+
 		String inStr = str;
-		return inStr + " " + inMindNow + " " + randomDecision();
+		return inStr + ". received " + inMindNow + " " + randomDecision();
 	}
 
 	public void go() {
-		// for (int x = 1; x <= 100; x++) 
-	      //      System.out.println("Value of x:" + x + ", " + randomDecision()); 
-		 
+		// for (int x = 1; x <= 100; x++)
+		// System.out.println("Value of x:" + x + ", " + randomDecision());
+		
 	}
-	
+
 	public String getFeedbackFrom(String str) {
+		try {
+			Thread.sleep(10); // auto pause good
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return mind(str);
+	}
+
+	public void speak(String str) {
+		str = str.replace(" ", "_");
+		System.out.println(str);
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec("espeak -s120 " + str + " 2>/dev/null");
+			p.waitFor();
+			System.out.println("exit: " + p.exitValue());
+			p.destroy();
+		} catch (Exception e) {
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			Thread.sleep(10); // auto pause good
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		speak(strToSpeak);
+	}
+
+	public static void thread(Runnable runnable, boolean daemon) {
+		Thread brokerThread = new Thread(runnable);
+		brokerThread.setDaemon(daemon);
+		brokerThread.start();
 	}
 }
