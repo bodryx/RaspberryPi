@@ -1,0 +1,40 @@
+package net.bodrykh.raspberrypi;
+
+public class JVoice implements Runnable {
+	private Thread t;
+	private String strToSpeak;
+	private int voiceType;
+	
+	public JVoice(String strToSpeak, int voiceType) {
+		this.strToSpeak = strToSpeak;
+		this.voiceType = voiceType;
+	}
+	
+	
+	private void speak(String strToSpeak, int voiceType) {
+		strToSpeak = strToSpeak.replace(" ", "_");
+		System.out.println(strToSpeak);
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec("espeak -s120 " + strToSpeak + " 2>/dev/null");
+			p.waitFor();
+			System.out.println("exit: " + p.exitValue());
+			p.destroy();
+		} catch (Exception e) {
+		}
+	}
+	
+	@Override
+	public void run() {
+		System.out.println("Inside JVoice run - voice " + strToSpeak);
+		speak(strToSpeak + "inside JVOice", voiceType);
+	}
+	
+	public void start() {
+		if (t == null) {
+			t = new Thread(this, "JVoice");
+			t.start();
+		}
+	}
+
+}

@@ -1,0 +1,46 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class Jarvis {
+	private String inMindNow;
+
+	private String strToSpeak;
+	private int voiceType;
+	private JVoice jVoice = new JVoice("Welcome Roman!", voiceType);
+
+	public Jarvis(String strToSpeak, int voiceType) {
+		this.strToSpeak = strToSpeak;
+		this.voiceType = voiceType;
+		inMindNow = "and a random decision is";
+		jVoice.toSpeak(strToSpeak);
+		go();
+	}
+
+	private boolean randomDecision() {
+		Random rand = new Random();
+
+		int n = rand.nextInt(100) + 1;
+		if (n < 50)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+
+		String inStr = str + ". received " + inMindNow + " " + randomDecision();
+		jVoice.toSpeak(inStr);
+
+		return inStr;
+	}
+
+	public void go() {
+		// tests
+
+	}
+
+	public String getFeedbackFrom(String str) {
+		return mind(str);
+	}
+
+}

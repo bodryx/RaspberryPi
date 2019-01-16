@@ -1,0 +1,11 @@
+package net.bodrykh.raspberrypi;
+
+public class JVoice implements Runnable {
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

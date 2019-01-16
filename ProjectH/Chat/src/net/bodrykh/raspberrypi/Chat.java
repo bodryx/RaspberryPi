@@ -12,13 +12,13 @@ public class Chat implements ActionListener {
 	String logMessege;
 	JButton button;
 	JFrame frame;
+	JPanel panel;
 	JTextField userInput;
 	JTextArea chatLog;
 	JScrollPane scroller;
-	String strToSpeak = "Welcome Roman!";
 	int voiceType = 0;
 
-	Jarvis jarvis = new Jarvis(strToSpeak, voiceType);
+	Jarvis jarvis = new Jarvis(voiceType);
 
 	Stack<String> chatStack = new Stack<>();
 
@@ -27,9 +27,15 @@ public class Chat implements ActionListener {
 		chatGui.go();
 	}
 
+	
 	public void go() {
 		frame = new JFrame();
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		userInput = new JTextField(20);
 		userInput.addActionListener(this);
@@ -41,55 +47,63 @@ public class Chat implements ActionListener {
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		frame.getContentPane().add(BorderLayout.SOUTH, scroller);
+		panel.add(userInput);
+		panel.add(scroller);
 
-		frame.getContentPane().add(BorderLayout.NORTH, userInput);
-
+		frame.getContentPane().add(BorderLayout.CENTER, panel);
 		frame.setSize(460, 300);
-
 		frame.setVisible(true);
-
+		
+		welcome();
 	}
 
-	/*
-	 * public void speak(String str) { str = str.replace(" ", "_");
-	 * System.out.println(str); Process p; try { p =
-	 * Runtime.getRuntime().exec("espeak -s120 " + str + " 2>/dev/null");
-	 * p.waitFor(); System.out.println("exit: " + p.exitValue()); p.destroy(); }
-	 * catch (Exception e) { } }
-	 */
+	public void welcome() {
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+		Date date = new Date();
+		String dateStr = dateFormat.format(date);
+		String getStr = jarvis.getFeedbackFrom(null);
+		String pcJarvis = dateStr + " Jarvis: " + getStr + "\n";
+		chatStack.push(pcJarvis);
+
+		chatLog.setText("");
+		for (int index = chatStack.size() - 1; index >= 0; index--) {
+			chatLog.append(chatStack.elementAt(index));
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String str;
+		String getStr;
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
 		Date date = new Date();
 		String dateStr = dateFormat.format(date);
 		String user, pcJarvis;
-		
-		String str = userInput.getText();
-		userInput.setText("");
-		
-		
+
 	
+	
+
+		
+		
+		str = userInput.getText();
+		userInput.setText("");
+
 		user = dateStr + " User: " + str + "\n";
 		chatStack.push(user);////
 		chatLog.setText("");
 		for (int index = chatStack.size() - 1; index >= 0; index--) {
 			chatLog.append(chatStack.elementAt(index));
 		}
-		
-	
-		
-		String getStr = jarvis.getFeedbackFrom(str);
+
+		getStr = jarvis.getFeedbackFrom(str);
 		pcJarvis = dateStr + " Jarvis: " + getStr + "\n";
 		chatStack.push(pcJarvis);/// send both that not OK!!!!!!!!!!!!!!!!!!!!
-		jarvis.thread(new Jarvis(getStr, 0), false); //to say
-		
+
 		chatLog.setText("");
 		for (int index = chatStack.size() - 1; index >= 0; index--) {
 			chatLog.append(chatStack.elementAt(index));
 		}
-		
-		
+
 		chatLog.setCaretPosition(0);
 	}
 }

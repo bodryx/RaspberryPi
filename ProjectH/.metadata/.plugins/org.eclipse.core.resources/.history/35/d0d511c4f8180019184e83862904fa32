@@ -1,0 +1,19 @@
+package net.bodrykh.raspberrypi;
+
+public class JVoice implements Runnable {
+	private Thread t;
+	private String strToSpeak;
+	private int voiceType;
+	
+	public JVoice(String strToSpeak, int voiceType) {
+		this.strToSpeak = strToSpeak;
+		this.voiceType = voiceType;
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		System.out.println("Inside JVoice run - voice");
+	}
+
+}

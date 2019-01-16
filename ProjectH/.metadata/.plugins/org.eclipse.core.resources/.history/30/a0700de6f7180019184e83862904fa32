@@ -1,0 +1,5 @@
+package net.bodrykh.raspberrypi;
+
+public class JVoice implements Runnable {
+
+}

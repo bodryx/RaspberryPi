@@ -1,0 +1,27 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class Jarvis {
+	JBrain brain = new JBrain();
+
+	
+	
+
+	public Jarvis() {
+			go();
+	}
+
+
+
+	public void go() {
+		// tests
+
+	}
+
+	public String getFeedbackFrom(String str) {
+		return null; //mind(str);
+		
+	}
+
+}

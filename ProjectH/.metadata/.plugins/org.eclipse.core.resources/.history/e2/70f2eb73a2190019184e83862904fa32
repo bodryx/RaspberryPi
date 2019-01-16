@@ -1,0 +1,28 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class Jarvis {
+	
+
+	private String strToSpeak;
+	private int voiceType;
+	private JVoice jVoice = new JVoice("Welcome Roman!", voiceType);
+
+	public Jarvis() {
+			go();
+	}
+
+
+
+	public void go() {
+		// tests
+
+	}
+
+	public String getFeedbackFrom(String str) {
+		return null; //mind(str);
+		
+	}
+
+}

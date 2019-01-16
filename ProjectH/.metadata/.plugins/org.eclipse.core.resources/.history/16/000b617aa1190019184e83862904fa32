@@ -1,0 +1,22 @@
+package net.bodrykh.raspberrypi;
+
+public class JBrain implements Runnable{
+	private Thread jarvisBrainThread;
+	@Override
+	public void run() {
+		
+	}
+	
+	
+	public void thread(Runnable runnable, boolean daemon) {
+
+		if (jarvisBrainThread == null) {
+			jarvisBrainThread = new Thread(this, "JarvisThread");
+			jarvisBrainThread.setDaemon(false);
+			jarvisBrainThread.start();
+		}
+
+	
+	
+}
+}

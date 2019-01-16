@@ -1,0 +1,28 @@
+package net.bodrykh.raspberrypi;
+
+public class Jarvis {
+	private int voiceType;
+	
+	private JBrain brain = new JBrain(voiceType);
+
+	
+	
+
+	public Jarvis(int voiceType) {
+		this.voiceType = voiceType;
+		go();
+	}
+
+
+
+	public void go() {
+		// Jarvis tests
+
+	}
+
+	public String getFeedbackFrom(String strUserInput) throws InterruptedException {
+		return brain.toProcess(strUserInput);
+		
+	}
+
+}

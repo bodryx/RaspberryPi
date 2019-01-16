@@ -1,0 +1,69 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class Jarvis implements Runnable {
+	private String inMindNow;
+
+	private String strToSpeak;
+	private int voiceType;
+	private JVoice jVoice = new JVoice("Welcome Roman!", voiceType);
+	
+	public Jarvis(String strToSpeak, int voiceType) {
+		this.strToSpeak = strToSpeak;
+		this.voiceType = voiceType;
+		inMindNow = "and a random decision is";
+		jVoice.setStrToSpeak(strToSpeak);
+		jVoice.start();
+		go();
+	}
+
+	private boolean randomDecision() {
+		Random rand = new Random();
+
+		int n = rand.nextInt(100) + 1;
+		if (n < 50)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+
+		String inStr = str;
+		return inStr + ". received " + inMindNow + " " + randomDecision();
+	}
+
+	public void go() {
+		//
+		
+		
+		
+	}
+
+	public String getFeedbackFrom(String str) {
+		try {
+			Thread.sleep(10); // auto pause good
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return mind(str);
+	}
+
+	@Override
+	public void run() {
+		try {
+			Thread.sleep(10); // auto pause good
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		jVoice.setStrToSpeak(strToSpeak);
+		jVoice.start();
+	}
+
+	public static void thread(Runnable runnable, boolean daemon) {
+		Thread brokerThread = new Thread(runnable);
+		brokerThread.setDaemon(daemon);
+		brokerThread.start();
+	}
+}

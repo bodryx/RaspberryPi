@@ -1,0 +1,64 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class JBrain implements Runnable {
+	private Thread jarvisBrainThread;
+	private String strUserInput;
+	private String strToSpeak = "Welcome Roman!";
+	private String inMindNow;
+	private int voiceType;
+
+	private JVoice jVoice = new JVoice(strToSpeak, voiceType);
+
+	JBrain(int voiceType) {
+		this.voiceType = voiceType;
+
+		jVoice.toSpeak(strToSpeak);
+
+		inMindNow = "and a random decision is";
+	}
+
+	@Override
+	public void run() {
+
+		strToSpeak = mind(strUserInput);
+		jVoice.toSpeak(strToSpeak);
+	}
+
+	private boolean randomDecision() {
+		Random rand = new Random();
+
+		int n = rand.nextInt(100) + 1;
+		if (n < 50)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+
+		String inStr = str + ". received " + inMindNow + " " + randomDecision();
+		jVoice.toSpeak(inStr);
+		strToSpeak = inStr;
+		return inStr;
+	}
+
+	public String toProcess(String strUserInput) {
+		this.strUserInput = strUserInput;
+		if (true) { //(jarvisBrainThread == null) {
+			jarvisBrainThread = new Thread(this, "JarvisBrainThread");
+			jarvisBrainThread.setDaemon(false);
+			jarvisBrainThread.start();
+		}
+
+		return strToSpeak;
+
+	}
+}
+
+/*
+ * 
+ * try { Thread.sleep(10); // auto pause good } catch (InterruptedException e) {
+ * e.printStackTrace(); }
+ * 
+ */
