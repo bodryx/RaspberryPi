@@ -1,0 +1,70 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class JBrain implements Runnable {
+	private Thread jarvisBrainThread;
+	private String strUserInput;
+	private String strJarvisOutput = "Welcome Roman!";
+	private String inMindNow;
+	private int voiceType;
+
+	private JVoice jVoice = new JVoice(strJarvisOutput, voiceType);
+
+	JBrain(int voiceType) {
+		this.voiceType = voiceType;
+		jVoice.toSpeak(strJarvisOutput);
+
+		inMindNow = "Random decisions are";
+	}
+
+	@Override
+	public void run() {
+		if (strUserInput == null) {
+			strJarvisOutput = "Welcome Roman!";
+		} else {
+			strJarvisOutput = mind(strUserInput);
+			System.out.println("inside - JBrainThread : after mind--- " + "--- strUserInput: " + strUserInput
+					+ "  ---+--- strToSpeak: " + strJarvisOutput);
+			jVoice.toSpeak(strJarvisOutput);
+		}
+	}
+
+	private boolean randomDecision() {
+		Random rand = new Random();
+		long sign = 1;
+		double dn;
+		for(int index = 0; index < 10; index++) {
+			dn = rand.nextDouble();
+			if(dn < 0) {
+				sign = sign * (-1);
+			}
+			
+		}
+		
+			if (number > 0)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+
+		String inStr = str + " - Received. " + inMindNow + " " + randomDecision() + " and " + randomDecision() + " and " + randomDecision() + " and ";
+		return inStr;
+	}
+
+	public String considering(String strUserInput) {
+		this.strUserInput = strUserInput;
+		jarvisBrainThread = new Thread(this, "JarvisBrainThread");
+		jarvisBrainThread.setDaemon(false);
+		jarvisBrainThread.start();
+
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return strJarvisOutput;
+
+	}
+}

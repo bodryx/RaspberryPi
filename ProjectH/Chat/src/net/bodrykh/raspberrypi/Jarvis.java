@@ -1,22 +1,17 @@
 package net.bodrykh.raspberrypi;
 
 public class Jarvis {
-	private int voiceType;
+	private String voiceTypeOptions;
 
-	private JBrain brain = new JBrain(voiceType);
+	private JBrain brain;
 
-	public Jarvis(int voiceType) {
-		this.voiceType = voiceType;
-		go();
-		
+	public Jarvis(String voiceTypeOptions) {
+		this.voiceTypeOptions = voiceTypeOptions;	
+		brain = new JBrain(this.voiceTypeOptions);
 	}
 
-	public void go() {
-
-	}
-
-	public String getFeedbackFrom(String strUserInput) {
-		return brain.think(strUserInput);
+	public String getFeedbackFromJarvis(String strJarvisInput) {
+		return brain.mindHandler(strJarvisInput);
 	}
 
 }

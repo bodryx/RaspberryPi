@@ -1,0 +1,87 @@
+package net.bodrykh.raspberrypi;
+
+import java.util.Random;
+
+public class JBrain implements Runnable {
+	private Thread jarvisBrainThread;
+	private String strUserInput;
+	private String strJarvisOutput = "Welcome Roman!";
+	private String inMindNow;
+	private int voiceType;
+
+	private JVoice jVoice = new JVoice(strJarvisOutput, voiceType);
+
+	JBrain(int voiceType) {
+		this.voiceType = voiceType;
+		jVoice.toSpeak(strJarvisOutput);
+
+		inMindNow = "Random decisions are";
+	}
+
+	@Override
+	public void run() {
+		if (strUserInput == null) {
+			strJarvisOutput = "Welcome Roman!";
+		} else {
+			strJarvisOutput = mind(strUserInput);
+			System.out.println("inside - JBrainThread : after mind--- " + "--- strUserInput: " + strUserInput
+					+ "  ---+--- strToSpeak: " + strJarvisOutput);
+			jVoice.toSpeak(strJarvisOutput);
+		}
+	}
+
+	private boolean randomDecision() {
+		Random rand = new Random();
+		long oct = 100000000;
+		long n1 = rand.nextLong() / oct;
+		long n2 = rand.nextLong() / oct;
+		long n3 = rand.nextLong() / oct;
+		long n4 = rand.nextLong() / oct;
+		long n5 = rand.nextLong() / oct;
+		long n6 = rand.nextLong() / oct;
+		long n7 = rand.nextLong() / oct;
+		long n8 = rand.nextLong() / oct;
+		long n9 = rand.nextLong() / oct;
+		long n10 = rand.nextLong() / oct;
+		n1 = n1 / oct;
+		n2 = n2 / oct;
+		n3 = n3 / oct;
+		n4 = n4 / oct;
+		n5 = n5 / oct;
+		n6 = n6 / oct;
+		n7 = n7 / oct;
+		n8 = n8 / oct;
+		n9 = n9 / oct;
+		n10 = n10 / oct;
+		long number = n1 * n2 * n3 * n4 * n5 * n6 * n7 * n8 * n9 * n10;
+		if (number > 0)
+			return true;
+		return false;
+	}
+
+	private String mind(String str) {
+
+		String inStr = str + " - Received. " + inMindNow + " " + randomDecision() + ".";
+		return inStr;
+	}
+
+	public String considering(String strUserInput) {
+		this.strUserInput = strUserInput;
+		strJarvisOutput = "";
+		jarvisBrainThread = new Thread(this, "JarvisBrainThread");
+		jarvisBrainThread.setDaemon(false);
+		jarvisBrainThread.start();
+		
+	/*	while (strJarvisOutput == null) {
+			try {
+				Thread.sleep(20);
+				System.out.print(" 1 ");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}	
+		}*/
+		
+		return strJarvisOutput;
+
+	}
+}

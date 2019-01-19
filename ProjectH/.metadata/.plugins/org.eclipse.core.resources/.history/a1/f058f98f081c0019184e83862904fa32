@@ -1,0 +1,48 @@
+package net.bodrykh.raspberrypi;
+
+public class JVoice implements Runnable {
+	private Thread jarvisVoiceThread;
+	private String strToSpeak;
+	private String voiceTypeOptions;
+
+	public JVoice(String strToSpeak, String  voiceTypeOptions) {
+		this.strToSpeak = strToSpeak;
+		this.voiceTypeOptions = voiceTypeOptions;
+	}
+
+//-g10 - word gap / pause between words, -s175 - speed, -a200 - Amplitude, 0 to 200, default is 100, -k20 - Indicate capital letters with sound.
+	private void speak(String strToSpeak, int voiceType) {
+		if (strToSpeak != null) {
+			strToSpeak = strToSpeak.replace(" ", "_");
+			Process p;
+			try {
+				p = Runtime.getRuntime().exec("espeak -s120 -a100 -k20 " + strToSpeak + " 2>/dev/null");
+				p.waitFor();
+				System.out.println("exit: " + p.exitValue());
+				p.destroy();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	public void setStrToSpeak(String strToSpeak) {
+		this.strToSpeak = strToSpeak;
+	}
+
+	public void setVoiceType(String voiceTypeOptions) {
+		this.voiceTypeOptions = voiceTypeOptions;
+	}
+
+	@Override
+	public void run() {
+		speak(strToSpeak, voiceTypeOptions);
+	}
+
+	public void toSpeak(String strToSpeak) {
+		this.strToSpeak = strToSpeak;
+		jarvisVoiceThread = new Thread(this, "JarvisVoiceThread");
+		jarvisVoiceThread.setDaemon(false);
+		jarvisVoiceThread.start();
+	}
+
+}

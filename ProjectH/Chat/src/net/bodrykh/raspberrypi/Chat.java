@@ -16,9 +16,14 @@ public class Chat implements ActionListener {
 	JTextField userInput;
 	JTextArea chatLog;
 	JScrollPane scroller;
-	int voiceType = 0;
+	
+	//	-s175 - default speed,
+	//	-g10 - word gap / pause between words,  
+	//	-a200 - amplitude, 0 to 200, default is 100,
+	//	-k20 - Indicate capital letters with sound.
+	String voiceTypeOptions = "-s120 -a100 -k20";
 
-	Jarvis jarvis = new Jarvis(voiceType);
+	Jarvis jarvis = new Jarvis(voiceTypeOptions);
 
 	Stack<String> chatStack = new Stack<>();
 
@@ -27,7 +32,6 @@ public class Chat implements ActionListener {
 		chatGui.go();
 	}
 
-	
 	public void go() {
 		frame = new JFrame();
 
@@ -53,56 +57,39 @@ public class Chat implements ActionListener {
 		frame.getContentPane().add(BorderLayout.CENTER, panel);
 		frame.setSize(460, 300);
 		frame.setVisible(true);
-		
+
 		welcome();
 	}
 
 	public void welcome() {
+		String jarvisOutputStr = jarvis.getFeedbackFromJarvis(null);
+		pushToHistory("Jarvis", jarvisOutputStr);
+	}
+
+	public void pushToHistory(String name, String str) {
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
 		Date date = new Date();
 		String dateStr = dateFormat.format(date);
-		String getStr = jarvis.getFeedbackFrom(null);
-		String pcJarvis = dateStr + " Jarvis: " + getStr + "\n";
-		chatStack.push(pcJarvis);
-
+		str = dateStr + "#" + name + " : " + str + "\n";
+		chatStack.push(str);
 		chatLog.setText("");
 		for (int index = chatStack.size() - 1; index >= 0; index--) {
 			chatLog.append(chatStack.elementAt(index));
 		}
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String str;
-		String getStr;
-		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-		Date date = new Date();
-		String dateStr = dateFormat.format(date);
-		String user, pcJarvis;
+		String userInputStr;
+		String jarvisOutputStr;
 
-	
-	
-
-		
-		
-		str = userInput.getText();
+		userInputStr = userInput.getText();
 		userInput.setText("");
+		pushToHistory("User", userInputStr);
 
-		user = dateStr + " User: " + str + "\n";
-		chatStack.push(user);////
-		chatLog.setText("");
-		for (int index = chatStack.size() - 1; index >= 0; index--) {
-			chatLog.append(chatStack.elementAt(index));
-		}
-
-		getStr = jarvis.getFeedbackFrom(str);
-		pcJarvis = dateStr + " Jarvis: " + getStr + "\n";
-		chatStack.push(pcJarvis);/// send both that not OK!!!!!!!!!!!!!!!!!!!!
-
-		chatLog.setText("");
-		for (int index = chatStack.size() - 1; index >= 0; index--) {
-			chatLog.append(chatStack.elementAt(index));
-		}
+		jarvisOutputStr = jarvis.getFeedbackFromJarvis(userInputStr);
+		pushToHistory("Jarvis", jarvisOutputStr);
 
 		chatLog.setCaretPosition(0);
 	}

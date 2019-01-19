@@ -1,0 +1,96 @@
+package net.bodrykh.raspberrypi;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Stack;
+
+public class Chat implements ActionListener {
+	String logMessege;
+	JButton button;
+	JFrame frame;
+	JPanel panel;
+	JTextField userInput;
+	JTextArea chatLog;
+	JScrollPane scroller;
+	
+	//	-s175 - speed,
+	//	-g10 - word gap / pause between words,  
+	//	-a200 - amplitude, 0 to 200, default is 100,
+	//	-k20 - Indicate capital letters with sound.
+	String voiceTypeOptions = "-s120 -a100 -k20";
+
+	Jarvis jarvis = new Jarvis(voiceTypeOptions);
+
+	Stack<String> chatStack = new Stack<>();
+
+	public static void main(String args[]) {
+		Chat chatGui = new Chat();
+		chatGui.go();
+	}
+
+	public void go() {
+		frame = new JFrame();
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		userInput = new JTextField(20);
+		userInput.addActionListener(this);
+
+		chatLog = new JTextArea(10, 20);
+		scroller = new JScrollPane(chatLog);
+		chatLog.setLineWrap(true);
+
+		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		panel.add(userInput);
+		panel.add(scroller);
+
+		frame.getContentPane().add(BorderLayout.CENTER, panel);
+		frame.setSize(460, 300);
+		frame.setVisible(true);
+
+		welcome();
+	}
+
+	public void welcome() {
+		String jarvisOutputStr = jarvis.getFeedbackFromJarvis(null);
+		pushToHistory("Jarvis", jarvisOutputStr);
+	}
+
+	public void pushToHistory(String name, String str) {
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+		Date date = new Date();
+		String dateStr = dateFormat.format(date);
+		str = dateStr + "#" + name + " : " + str + "\n";
+		chatStack.push(str);
+		chatLog.setText("");
+		for (int index = chatStack.size() - 1; index >= 0; index--) {
+			chatLog.append(chatStack.elementAt(index));
+		}
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String userInputStr;
+		String jarvisOutputStr;
+
+		userInputStr = userInput.getText();
+		userInput.setText("");
+		pushToHistory("User", userInputStr);
+
+		jarvisOutputStr = jarvis.getFeedbackFromJarvis(userInputStr);
+		pushToHistory("Jarvis", jarvisOutputStr);
+
+		chatLog.setCaretPosition(0);
+	}
+}
