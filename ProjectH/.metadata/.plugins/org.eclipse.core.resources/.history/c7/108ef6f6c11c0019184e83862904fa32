@@ -15,7 +15,7 @@ public class JBrain implements Runnable {
 		this.voiceTypeOptions = voiceTypeOptions;
 		jVoice = new JVoice(strBrainOutput, this.voiceTypeOptions);
 		strBrainOutput = "Welcome Roman!";
-		inMindNow = "Decision is";
+		inMindNow = "Random decision is";
 	}
 
 	private int randomTime(int timeMax) {
@@ -82,7 +82,7 @@ public class JBrain implements Runnable {
 	public String mindHandler(String strBrainInput) {
 		this.strBrainInput = strBrainInput;
 		strBrainOutput = "";
-		jarvisBrainThread = new Thread(this, "JarvisBrainThread");
+		jarvisBrainThread = new Thread(this, "jarvisBrainThread");
 		jarvisBrainThread.setDaemon(false);
 		jarvisBrainThread.start();
 		int count = 0;
@@ -96,8 +96,8 @@ public class JBrain implements Runnable {
 			count++;
 		}
 
-		System.out.println("JarvisBrainThread running time  : " + count + " milliseconds.");
-		return strBrainOutput + " [RT:" + count + "ms]"; // main Jarvis's output
+		System.out.println("jarvisBrainThread running time  : " + count + " milliseconds.");
+		return strBrainOutput; // main Jarvis's output
 
 	}
 }

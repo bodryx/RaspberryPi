@@ -96,8 +96,8 @@ public class JBrain implements Runnable {
 			count++;
 		}
 
-		System.out.println("JarvisBrainThread running time  : " + count + " milliseconds.");
-		return strBrainOutput + " [RT:" + count + "ms]"; // main Jarvis's output
+		System.out.println("BrainT running time  : " + count + " milliseconds.");
+		return strBrainOutput + " Thread running time  : " + count + " milliseconds."; // main Jarvis's output
 
 	}
 }
